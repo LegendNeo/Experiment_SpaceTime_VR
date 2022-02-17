@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Stopwatch : MonoBehaviour
+public class Stopwatch 
 {
     float startTime = 0;
     float totalTimeElapsed = 0;
     List <float> timeSegments = new List<float>();
     bool running = false;
 
+    bool locked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,14 +27,20 @@ public class Stopwatch : MonoBehaviour
     // Starts Timer.
     public void StartTiming()
     {
-        if(!running)
+        if(!locked)
         {
-            running = true;
-            startTime = Time.time;
+            if(!running)
+            {
+                running = true;
+                startTime = Time.time;
+            }
+            else
+            {
+            }
         }
         else
         {
-            print("Can't start stopwatch if it hasn't even stopped yet");
+            MonoBehaviour.print("Stopwatch is locked and can't be restarted");
         }
     }
 
@@ -48,7 +56,7 @@ public class Stopwatch : MonoBehaviour
         }
         else
         {
-            print("Can't stop stopwatch if it hasn't even started");
+            MonoBehaviour.print("Can't stop stopwatch if it hasn't even started");
         }
     }
     
@@ -73,5 +81,17 @@ public class Stopwatch : MonoBehaviour
     public List <float> GetTimeSegments()
     {
         return timeSegments;
+    }
+
+    //locks the stopwatch and prevents timing from being restarted
+    public void lockStopwatch()
+    {
+        locked = true;
+    }
+
+    // unlocks the stopwatch, re-enables timing start
+    public void unlockStopwatch()
+    {
+        locked = false;
     }
 }

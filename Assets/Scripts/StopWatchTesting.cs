@@ -9,20 +9,27 @@ public class StopWatchTesting : MonoBehaviour
     
     public InputActionReference startButton;
     public InputActionReference stopButton;
+
+    public TRT_Stimulus_Behavior trtStim;
+    public TRT_Reproduction_Feedback_Behavior trtFeedback;
+    TRT_Procedure trt;
     // Start is called before the first frame update
     void Start()
     {
-        print("STOPWATCH CREATED");
-        myStopWatch.ResetTiming();
+        myStopWatch = new Stopwatch();
+        myStopWatch.StartTiming();
 
-        startButton.action.performed += StartUp;
-        stopButton.action.performed += StopDown;
+        DontDestroyOnLoad(this.gameObject);
+
+        trt = new TRT_Procedure(6, null, "Room Small", myStopWatch);
+        trt.SetStimulus(trtStim);
+        trt.stimulate_start();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        print(trt.state);
     }
 
     void StartUp(InputAction.CallbackContext obj)
