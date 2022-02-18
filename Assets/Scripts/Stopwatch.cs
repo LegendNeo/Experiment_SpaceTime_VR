@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Stopwatch 
+public class Stopwatch: MonoBehaviour
 {
-    float startTime = 0;
+    DateTime startTime = DateTime.MinValue;
     float totalTimeElapsed = 0;
     List <float> timeSegments = new List<float>();
     bool running = false;
@@ -31,11 +31,13 @@ public class Stopwatch
         {
             if(!running)
             {
+                MonoBehaviour.print("Starting time");
                 running = true;
-                startTime = Time.time;
+                startTime = DateTime.Now;
             }
             else
             {
+                MonoBehaviour.print("Timing can't be started if stopwatch is still running");
             }
         }
         else
@@ -50,9 +52,12 @@ public class Stopwatch
         if(running)
         {
             running = false;
-            float elapsedTimeInSegment =  Time.time - startTime;
-            timeSegments.Add(elapsedTimeInSegment);
-            totalTimeElapsed += elapsedTimeInSegment;
+            
+            TimeSpan elapsedTimeInSegment =  DateTime.Now - startTime;
+            float elapsedTimeInSeconds = (elapsedTimeInSegment.Seconds * 1000 + elapsedTimeInSegment.Milliseconds) / 1000;
+            timeSegments.Add(elapsedTimeInSeconds);
+            totalTimeElapsed += elapsedTimeInSeconds;
+            print("stopped time at"+totalTimeElapsed);
         }
         else
         {
@@ -68,7 +73,7 @@ public class Stopwatch
         timeSegments.Clear();
         totalTimeElapsed = 0;
         running = false;
-        startTime = 0;
+        startTime = DateTime.MinValue;
     }
 
     // Returns the total time of all segments.

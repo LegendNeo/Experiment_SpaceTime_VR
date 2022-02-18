@@ -34,7 +34,7 @@ public class RoomSwitcher : MonoBehaviour
             if (timeToSwitch <= 0f)
             {
                 timeToSwitch = resetTime;
-                SceneManager.LoadScene(sceneName);
+                switchTo(sceneName);
             }
         }
 
@@ -50,4 +50,14 @@ public class RoomSwitcher : MonoBehaviour
         counting = false;
     }
 
+    public static void switchTo(string sceneName){
+        print("Got to Roomswitcher.switchTo()");
+        try{
+            SceneManager.LoadScene(sceneName);
+        }
+        catch(UnityException e){
+            print(e);
+
+        }
+    }
 }
