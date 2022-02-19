@@ -7,10 +7,11 @@ using UnityEngine;
 public class TRT_Stimulus_Behavior : MonoBehaviour
 {
     bool IsOn = false; 
+    Lamp lamp;
     // Start is called before the first frame update
     void Start()
     {
-        
+        lamp = FindObjectOfType<Lamp> ();
     }
 
     // Update is called once per frame
@@ -26,6 +27,7 @@ public class TRT_Stimulus_Behavior : MonoBehaviour
             //Implement SWITCHING ON the lamp here
             print("Switching lamp ON");
             IsOn = true;
+            lamp.TurnOn = true;
         }
     }
 
@@ -36,6 +38,7 @@ public class TRT_Stimulus_Behavior : MonoBehaviour
             //Implement SWITCHING OFF the lamp here
             print("Switching lamp OFF");
             IsOn = false;
+            lamp.TurnOn = false;
         }
     }
 }

@@ -81,7 +81,7 @@ public class TRT_Procedure: MonoBehaviour
         stimulus.SwitchOff();
         state = "STIMULUS_OFF";
         CustomTimer sceneChangeTimer = FindObjectOfType<CustomTimer>();
-        sceneChangeTimer.AddTimer("CHANGE_TO_MENU", timeInSeconds, reproduce_load_scene);
+        sceneChangeTimer.AddTimer("CHANGE_TO_MENU", TIME_BETWEEN_STIMULUS_AND_SCENE_CHANGE, reproduce_load_scene);
         sceneChangeTimer.StartTimer("CHANGE_TO_MENU");
         //see above
         //Timer timeUntilSceneChange = new Timer(TIME_BETWEEN_STIMULUS_AND_SCENE_CHANGE * 1000);
