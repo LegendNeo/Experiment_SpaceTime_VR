@@ -32,7 +32,7 @@ public class StopWatchTesting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(trt.state);
+        //print(trt.state);
     }
 
     void StartUp(InputAction.CallbackContext obj)

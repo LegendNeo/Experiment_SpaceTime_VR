@@ -21,6 +21,7 @@ public class RoomSwitcher : MonoBehaviour
     void Start() {
         resetTime = timeToSwitch;
         backButton.action.performed += StopCounting;
+        Debug.Log("HELLO: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     }
 
 
@@ -37,7 +38,6 @@ public class RoomSwitcher : MonoBehaviour
                 switchTo(sceneName);
             }
         }
-
         //if (!emitLight)
         //{
             //xyz.SetActive(false);
@@ -47,6 +47,7 @@ public class RoomSwitcher : MonoBehaviour
     }
 
     void StopCounting(InputAction.CallbackContext obj) {
+        Debug.Log("HELLO: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         counting = false;
     }
 
