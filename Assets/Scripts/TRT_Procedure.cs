@@ -141,12 +141,12 @@ public class TRT_Procedure: MonoBehaviour
         //implement code that make button up trigger reproduce_end()
         //this one below just simulates it
         CustomTimer userReleaseSimulator = FindObjectOfType<CustomTimer>();
-        userReleaseSimulator.AddTimer("UNTIL_USER_RELEASE", 3, reproduce_on_button_down);
+        userReleaseSimulator.AddTimer("UNTIL_USER_RELEASE", 3, reproduce_on_button_up);
         userReleaseSimulator.StartTimer("UNTIL_USER_RELEASE");
         
     }
 
-    public void reproduce_on_button_up(InputAction.CallbackContext obj)
+    public void reproduce_on_button_up()
     {
         state = "REPRODUCTION_FINISHED";
         reproductionStopwatch.StopTiming();
