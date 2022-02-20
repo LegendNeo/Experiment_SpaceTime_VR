@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.XR;
 public class HandPresence : MonoBehaviour
 {
+    public delegate void buttonAction();
+    buttonAction onPrimaryDown;
+    buttonAction onPrimaryUp;
+    buttonAction onPrimaryHeld;
+
+    bool isPrimaryDown;
+
+
     private InputDevice targetDevice;
     // Start is called before the first frame update
     void Start()
@@ -26,8 +34,40 @@ public class HandPresence : MonoBehaviour
     void Update()
     {
         targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool primaryButtonValue);
+        if(primaryButtonValue && !isPrimaryDown)
+        {
+            if(onPrimaryDown != null)
+            {
+                onPrimaryDown();
+            }
+            isPrimaryDown = true;
+        }
+
+        if(!primaryButtonValue && isPrimaryDown)
+        {
+            if(onPrimaryUp != null)
+            {
+                onPrimaryUp();
+            }
+            isPrimaryDown = false;
+        }
+
         if(primaryButtonValue){
+            if(onPrimaryHeld != null)
+            {
+                onPrimaryHeld();
+            }
             Debug.Log("Pressing Primary Button");
         }
+    }
+
+    public void bindToPrimaryDown(buttonAction onDown)
+    {
+        onPrimaryDown = onDown;
+    }
+    
+    public void bindToPrimaryUp(buttonAction onUp)
+    {
+        onPrimaryUp = onUp;
     }
 }

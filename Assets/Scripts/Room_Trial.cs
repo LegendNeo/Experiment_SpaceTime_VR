@@ -7,7 +7,7 @@ public class Room_Trial : MonoBehaviour
     float TIME_TO_GET_COMFORTABLE = 20f;
 
     public float additionalTime;
-    public string sceneName;
+    public string sceneName = "";
 
     public object callback;
 
@@ -25,7 +25,10 @@ public class Room_Trial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(SceneManager.GetActiveScene().name == sceneName && !isInCorrectScene){
+            isInCorrectScene = true;
+            onSceneLoaded();
+        }
     }
 
     public void init(float additionalTime, string sceneName)
