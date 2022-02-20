@@ -127,9 +127,9 @@ public class TRT_Procedure: MonoBehaviour
 
         //implement here: Code that make button down trigger reproduce_on_button_down()
         //this one below just simulates it
-        CustomTimer userPressSimulator = FindObjectOfType<CustomTimer>();
-        userPressSimulator.AddTimer("UNTIL_USER_PRESS", 3, reproduce_on_button_down);
-        userPressSimulator.StartTimer("UNTIL_USER_PRESS");
+        HandPresence handPresence = FindObjectOfType<HandPresence>().GetComponent<HandPresence>();
+        handPresence.bindToPrimaryDown(reproduce_on_button_down);
+        handPresence.bindToPrimaryUp(reproduce_on_button_up);
     }
 
     public void reproduce_on_button_down()
