@@ -21,7 +21,7 @@ public class Stopwatch: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     // Starts Timer.

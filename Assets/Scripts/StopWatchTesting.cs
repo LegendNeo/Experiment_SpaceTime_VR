@@ -16,17 +16,14 @@ public class StopWatchTesting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject globalStopwatch = new GameObject("globalStopwatch");
-        myStopWatch = globalStopwatch.AddComponent<Stopwatch>();
-        DontDestroyOnLoad(globalStopwatch);
-        myStopWatch.StartTiming();
+        string uselessVariable = "LUL";
+        DontDestroyOnLoad(gameObject);
+        GameObject roomTrialObject = new GameObject("roomTrialTest");
+        Room_Trial room_Trial = roomTrialObject.AddComponent<Room_Trial>();
+        DontDestroyOnLoad(roomTrialObject);
 
-        DontDestroyOnLoad(this.gameObject);
-
-        trt = gameObject.AddComponent<TRT_Procedure>();
-        trt.init(6, null, "Room Small", myStopWatch);
-        trt.SetStimulus(trtStim);
-        trt.stimulate_start();
+        room_Trial.init(20f, "Room Medium");
+        room_Trial.startRoomTrial();
     }
 
     // Update is called once per frame

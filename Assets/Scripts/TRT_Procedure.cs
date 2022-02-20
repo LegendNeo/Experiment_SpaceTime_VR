@@ -18,6 +18,8 @@ public class TRT_Procedure: MonoBehaviour
     Stopwatch reproductionStopwatch;
     Stopwatch globalStopwatch;
 
+    Room_Trial callback;
+
     float timeInSeconds;
     /**
     * init(): Replaces constructor after I had to make this class a MonoBehaviour (I love scripting in Unity)
@@ -29,7 +31,7 @@ public class TRT_Procedure: MonoBehaviour
     * globalRoomStopwatch: A Stopwatch that measures the total time spent in a room.
     */
     
-    public void init(float timeInSeconds, object callbackObject, string sceneName, Stopwatch globalRoomStopwatch)
+    public void init(float timeInSeconds, Room_Trial callbackObject, string sceneName, Stopwatch globalRoomStopwatch)
     {
         this.originalSceneName = sceneName;
         this.timeInSeconds = timeInSeconds;
