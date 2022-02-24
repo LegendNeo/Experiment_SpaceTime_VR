@@ -36,6 +36,7 @@ public class TRT_Procedure: MonoBehaviour
         this.originalSceneName = sceneName;
         this.timeInSeconds = timeInSeconds;
         this.globalStopwatch = globalRoomStopwatch;
+        this.callback = callbackObject;
     }
     public void start()
     {
@@ -154,10 +155,6 @@ public class TRT_Procedure: MonoBehaviour
         reproductionStopwatch.StopTiming();
         reprodFeedback.switchOff();
         reproductionStopwatch.lockStopwatch();
-        float reproducedTime = reproductionStopwatch.GetTime();
-
-        // implement a callback that gives the measured time to some bigger instance or records it
-        // idk how to exactly implement it atm
 
         reproduce_end();
         //if transition is too abrupt, maybe call reproduce_end after a timer
@@ -168,5 +165,11 @@ public class TRT_Procedure: MonoBehaviour
     {
         SceneManager.LoadScene(originalSceneName);
         globalStopwatch.StartTiming();
+        
+        float reproducedTime = reproductionStopwatch.GetTime();
+
+        // implement a callback that gives the measured time to some bigger instance or records it
+        // idk how to exactly implement it atm
+        this.callback.endTRT(reproducedTime);
     }
 }

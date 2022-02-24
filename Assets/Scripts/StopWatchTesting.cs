@@ -16,7 +16,6 @@ public class StopWatchTesting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string uselessVariable = "LUL";
         DontDestroyOnLoad(gameObject);
         GameObject roomTrialObject = new GameObject("roomTrialTest");
         Room_Trial room_Trial = roomTrialObject.AddComponent<Room_Trial>();
