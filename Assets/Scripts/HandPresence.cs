@@ -11,6 +11,11 @@ public class HandPresence : MonoBehaviour
 
     bool isPrimaryDown;
 
+    buttonAction onTriggerDown;
+    buttonAction onTriggerUp;
+    buttonAction onTriggerHeld;
+
+    bool isTriggerDown;
 
     private InputDevice targetDevice;
     // Start is called before the first frame update
@@ -34,6 +39,7 @@ public class HandPresence : MonoBehaviour
     void Update()
     {
         targetDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool primaryButtonValue);
+        targetDevice.TryGetFeatureValue(CommonUsages.triggerButton, out bool triggerButtonValue);
         if(primaryButtonValue && !isPrimaryDown)
         {
             if(onPrimaryDown != null)
@@ -59,6 +65,33 @@ public class HandPresence : MonoBehaviour
             }
             Debug.Log("Pressing Primary Button");
         }
+
+        if(triggerButtonValue && !isTriggerDown)
+        {
+            if(onTriggerDown != null)
+            {
+                onTriggerDown();
+            }
+            isTriggerDown = true;
+        }
+
+        if(!triggerButtonValue && isTriggerDown)
+        {
+            if(onTriggerUp != null)
+            {
+                onTriggerUp();
+            }
+            isTriggerDown = false;
+        }
+
+        if(triggerButtonValue){
+            if(onTriggerHeld != null)
+            {
+                onTriggerHeld();
+            }
+            Debug.Log("Pressing Trigger Button");
+        }
+
     }
 
     public void bindToPrimaryDown(buttonAction onDown)
@@ -69,5 +102,20 @@ public class HandPresence : MonoBehaviour
     public void bindToPrimaryUp(buttonAction onUp)
     {
         onPrimaryUp = onUp;
+    }
+
+    public void bindToTriggerDown(buttonAction onDown)
+    {
+        onTriggerDown = onDown;
+    }
+
+    public void bindToTriggerUp(buttonAction onUp)
+    {
+        onTriggerUp = onUp;
+    }
+
+    public void bindToTriggerHeld(buttonAction onHeld)
+    {
+        onTriggerHeld = onHeld;
     }
 }

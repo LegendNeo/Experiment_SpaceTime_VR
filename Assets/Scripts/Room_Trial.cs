@@ -10,11 +10,10 @@ public class Room_Trial : MonoBehaviour
     public float additionalTime;
     public string sceneName = "";
 
-    public object callback;
-
     public Stopwatch totalRoomStopwatch;
 
     bool initialSceneLoad = false;
+    bool keepResults = true;
 
     float [] trtLengths = new float [3]; 
 
@@ -23,6 +22,8 @@ public class Room_Trial : MonoBehaviour
     CustomTimer generalTimer;
 
     TRT_Stimulus_Behavior trt_stimulus;
+
+    Procedure callbackObject;
 
 
     // Start is called before the first frame update
@@ -37,10 +38,11 @@ public class Room_Trial : MonoBehaviour
         
     }
 
-    public void init(float additionalTime, string sceneName)
+    public void init(float additionalTime, string sceneName, Procedure callbackObject)
     {
         this.additionalTime = additionalTime;
         this.sceneName = sceneName;
+        this.callbackObject = callbackObject;
 
         this.totalRoomStopwatch = gameObject.AddComponent<Stopwatch>();
         trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
@@ -103,5 +105,8 @@ public class Room_Trial : MonoBehaviour
 
     void onEnd(){
         print("Reached end of RoomTrial");
+        totalRoomStopwatch.StopTiming();
+        float totalTime = totalRoomStopwatch.GetTime();
+        callbackObject.endRoomTrial(totalTime);
     }
 }
