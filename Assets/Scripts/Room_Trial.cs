@@ -45,10 +45,8 @@ public class Room_Trial : MonoBehaviour
         this.callbackObject = callbackObject;
 
         this.totalRoomStopwatch = gameObject.AddComponent<Stopwatch>();
-        trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
 
         trtLengths = determineTRTLengths();
-        print("TRT STIMULUS "+trt_stimulus);
     }
 
     public float[] determineTRTLengths()
@@ -72,6 +70,7 @@ public class Room_Trial : MonoBehaviour
         {
             initialSceneLoad = true;
             totalRoomStopwatch.StartTiming();
+            trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
 
             generalTimer.AddTimer("GET_COMFORTABLE", TIME_TO_GET_COMFORTABLE, startTRT);
             generalTimer.StartTimer("GET_COMFORTABLE");
