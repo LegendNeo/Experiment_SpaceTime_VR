@@ -77,13 +77,12 @@ public class Procedure : MonoBehaviour
             print("All Room Trials Completed");
         }
 
-        void proceedToNextRoomTrial()
-        {
-            Destroy(currentRoomTrialObject);
-            startRoomTrial(roomOrder[numRoomTrial-1], timeOrder[numRoomTrial-1]);
-        }
-
     }
-
+    void proceedToNextRoomTrial()
+    {
+        print("Proceeding to next room trial");
+        Destroy(currentRoomTrialObject);
+        startRoomTrial(roomOrder[numRoomTrial-1], timeOrder[numRoomTrial-1]);
+    }
 
 }
