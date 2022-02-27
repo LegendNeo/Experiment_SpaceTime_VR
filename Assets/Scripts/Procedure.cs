@@ -79,6 +79,7 @@ public class Procedure : MonoBehaviour
 
         void proceedToNextRoomTrial()
         {
+            Destroy(currentRoomTrialObject);
             startRoomTrial(roomOrder[numRoomTrial-1], timeOrder[numRoomTrial-1]);
         }
 

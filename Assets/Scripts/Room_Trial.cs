@@ -65,15 +65,21 @@ public class Room_Trial : MonoBehaviour
 
     public void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        SceneManager.sceneLoaded -= onSceneLoaded; //ensures that this method is only called when it does not overstay its welcome
+        totalRoomStopwatch.StartTiming();
+        trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
         print("Scene has been loaded");
         if(!initialSceneLoad)
         {
             initialSceneLoad = true;
-            totalRoomStopwatch.StartTiming();
-            trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
 
             generalTimer.AddTimer("GET_COMFORTABLE", TIME_TO_GET_COMFORTABLE, startTRT);
             generalTimer.StartTimer("GET_COMFORTABLE");
+        }
+        else
+        {
+            generalTimer.AddTimer("BETWEEN_TRT", TIME_BETWEEN_TRTS, startTRT);
+            generalTimer.StartTimer("BETWEEN_TRT");
         }
     }
 
@@ -94,10 +100,10 @@ public class Room_Trial : MonoBehaviour
 
         numTRT++;
 
-        if(numTRT > 3)
+        if(numTRT < 3)
         {
-            generalTimer.AddTimer("NEXT_TRT", TIME_BETWEEN_TRTS, startTRT);
-            generalTimer.StartTimer("NEXT_TRT");
+            SceneManager.sceneLoaded += onSceneLoaded;
+            SceneManager.LoadScene(sceneName);
         }
         else
         {
