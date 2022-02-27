@@ -46,6 +46,9 @@ public class Room_Trial : MonoBehaviour
 
         this.totalRoomStopwatch = gameObject.AddComponent<Stopwatch>();
         trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
+
+        trtLengths = determineTRTLengths();
+        print("TRT STIMULUS "+trt_stimulus);
     }
 
     public float[] determineTRTLengths()

@@ -24,7 +24,7 @@ public class Procedure : MonoBehaviour
             print("Looks like I am the first Procedure skript running");
             print("Initiating Experiment");
             DontDestroyOnLoad(gameObject);
-            print(Application.persistentDataPath);
+            print("Application.persistentDataPath "+Application.persistentDataPath);
             determineOrderOfConditions();
             startDummyTrial();
         }
