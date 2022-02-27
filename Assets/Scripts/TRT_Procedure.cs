@@ -161,8 +161,6 @@ public class TRT_Procedure: MonoBehaviour
     
     public void reproduce_end()
     {
-        SceneManager.LoadScene(originalSceneName);
-        globalStopwatch.StartTiming();
         
         float reproducedTime = reproductionStopwatch.GetTime();
 
