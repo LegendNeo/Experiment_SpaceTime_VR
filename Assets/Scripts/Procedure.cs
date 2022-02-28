@@ -11,7 +11,7 @@ public class Procedure : MonoBehaviour
     private string [] roomOrder;
     private float [] timeOrder;
 
-    private string SCENE_BETWEEN_ROOM_TRIALS = "Room Menu";
+    private string SCENE_BETWEEN_ROOM_TRIALS = "Neutral";
 
     bool canProceedToNextRoomTrial = false;
 
@@ -26,6 +26,8 @@ public class Procedure : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             print("Application.persistentDataPath "+Application.persistentDataPath);
             determineOrderOfConditions();
+            //HandPresence handpresence = FindObjectOfType <HandPresence>(); //commented for testing purposes
+            //handpresence.bindToTriggerDown(startDummyTrial);
             startDummyTrial();
         }
     }
@@ -49,6 +51,7 @@ public class Procedure : MonoBehaviour
         DontDestroyOnLoad(currentRoomTrialObject);
         Room_Trial roomTrial = currentRoomTrialObject.AddComponent<Room_Trial>();
         roomTrial.init(additionalTime, room, this);
+        
         roomTrial.startRoomTrial();
     }
 
