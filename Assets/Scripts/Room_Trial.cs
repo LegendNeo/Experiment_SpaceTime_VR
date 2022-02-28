@@ -129,8 +129,8 @@ public class Room_Trial : MonoBehaviour
         }
         else
         {
-            generalTimer.AddTimer("ADDITIONAL_STAY_TIME", additionalTime, onEnd);
-            generalTimer.StartTimer("ADDITIONAL_STAY_TIME");
+            SceneManager.sceneLoaded += initiateAdditionalStayTime;
+            SceneManager.LoadScene(sceneName);
         }
     }
 
@@ -138,6 +138,14 @@ public class Room_Trial : MonoBehaviour
         char del = Procedure.CSV_DELIMITER;
         string csvLine = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}", del,DateTime.Now, ID, room, actualTime, perceivedTime);
         return csvLine;
+    }
+
+    void initiateAdditionalStayTime(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        SceneManager.sceneLoaded -= initiateAdditionalStayTime;
+        generalTimer.AddTimer("ADDITIONAL_STAY_TIME", additionalTime, onEnd);
+        generalTimer.StartTimer("ADDITIONAL_STAY_TIME");
+
     }
 
     void onEnd(){
