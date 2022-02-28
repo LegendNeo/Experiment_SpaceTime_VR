@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.IO;
 public class Room_Trial : MonoBehaviour
 {
     float TIME_TO_GET_COMFORTABLE = 20f;
@@ -17,6 +18,7 @@ public class Room_Trial : MonoBehaviour
     bool keepResults = true;
 
     float [] trtLengths = new float [3]; 
+    string TRTResultFilePath;
 
     int numTRT = 0;
 
@@ -41,12 +43,13 @@ public class Room_Trial : MonoBehaviour
         
     }
 
-    public void init(int ID, float additionalTime, string sceneName, Procedure callbackObject)
+    public void init(int ID, float additionalTime, string sceneName, Procedure callbackObject, string TRTResultFilePath, bool keepResults)
     {
         this.additionalTime = additionalTime;
         this.sceneName = sceneName;
         this.callbackObject = callbackObject;
         this.ID = ID;
+        this.TRTResultFilePath = TRTResultFilePath;
 
         this.totalRoomStopwatch = gameObject.AddComponent<Stopwatch>();
 
@@ -102,7 +105,20 @@ public class Room_Trial : MonoBehaviour
     {
         float actualTime = trtLengths[numTRT];
         //TODO: record actualTime and result
-        print(TRTtoCSV(actualTime, result, sceneName));
+        if(keepResults)
+        {
+            try
+            {
+                StreamWriter writer = new StreamWriter(TRTResultFilePath);
+                writer.WriteLine(TRTtoCSV(actualTime,result,sceneName));
+                writer.Flush();
+                writer.Close();
+            }
+            catch(IOException e)
+            {
+                print(e.Message);
+            }
+        }
 
         numTRT++;
         print("ending TRT Nr " +numTRT);
@@ -127,7 +143,16 @@ public class Room_Trial : MonoBehaviour
     void onEnd(){
         print("Reached end of RoomTrial");
         totalRoomStopwatch.StopTiming();
+        SceneManager.sceneLoaded += onRoomExited;
+        SceneManager.LoadScene(callbackObject.SCENE_BETWEEN_ROOM_TRIALS);
+    }
+    
+    void onRoomExited(Scene scene, LoadSceneMode loadSceneMode){
+        print("Room has been exited");
         float totalTime = totalRoomStopwatch.GetTime();
         callbackObject.endRoomTrial(totalTime);
+        
     }
+
+
 }

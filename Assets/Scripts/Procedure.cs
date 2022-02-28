@@ -15,7 +15,7 @@ public class Procedure : MonoBehaviour
     private string [] roomOrder;
     private float [] timeOrder;
 
-    private string SCENE_BETWEEN_ROOM_TRIALS = "Neutral";
+    public string SCENE_BETWEEN_ROOM_TRIALS = "Neutral";
 
     bool canProceedToNextRoomTrial = false;
 
@@ -57,14 +57,31 @@ public class Procedure : MonoBehaviour
         {
             Directory.CreateDirectory(directoryPath);
 
-            FileStream trtResultsFS = File.Create(pathToTRTResults);
-            FileStream roomResultsFS = File.Create(pathToRoomResults);
-            trtResultsFS.Close();
-            roomResultsFS.Close();
 
+        }
+        if (!File.Exists(pathToTRTResults))
+        {
             try{
+                FileStream trtResultsFS = File.Create(pathToTRTResults);
+                trtResultsFS.Close();
                 StreamWriter writer = new StreamWriter(pathToTRTResults);
                 writer.WriteLine("Timestamp;ID;stimulusTime;reproducedTime;room");
+                writer.Flush();
+                writer.Close();
+            }
+            catch(IOException e)
+            {
+                print(e.Message);
+            }
+        }
+        if(!File.Exists(pathToRoomResults))
+        {
+            try
+            {
+                FileStream roomResultsFS = File.Create(pathToRoomResults);
+                roomResultsFS.Close();
+                StreamWriter writer = new StreamWriter(pathToRoomResults);
+                writer.WriteLine("Timestamp;ID;room;timeInRoom");
                 writer.Flush();
                 writer.Close();
             }
@@ -87,26 +104,25 @@ public class Procedure : MonoBehaviour
         timeOrder = new float[]{10,20,30,10,20,30,10,20,30};
     }
 
-    void startRoomTrial(string room, float additionalTime)
+    void startRoomTrial(string room, float additionalTime, bool keepResult)
     {
         currentRoomTrialObject = new GameObject("Room Trial " + numRoomTrial);
         DontDestroyOnLoad(currentRoomTrialObject);
         Room_Trial roomTrial = currentRoomTrialObject.AddComponent<Room_Trial>();
-        roomTrial.init(ID, additionalTime, room, this);
+        roomTrial.init(ID, additionalTime, room, this, pathToTRTResults, keepResult);
         
         roomTrial.startRoomTrial();
     }
 
     void startDummyTrial()
     {
-        startRoomTrial("Room Menu", 5);
+        startRoomTrial("Room Menu", 5, false);
     }
 
     public void endRoomTrial(float totalTime)
     {
         print("Total time"+totalTime);
         print("Room Trial Completed!");
-        SceneManager.LoadScene(SCENE_BETWEEN_ROOM_TRIALS);
         if(numRoomTrial < 9)
         {
             if(numRoomTrial != 0)
@@ -127,7 +143,7 @@ public class Procedure : MonoBehaviour
     {
         print("Proceeding to next room trial");
         Destroy(currentRoomTrialObject);
-        startRoomTrial(roomOrder[numRoomTrial-1], timeOrder[numRoomTrial-1]);
+        startRoomTrial(roomOrder[numRoomTrial-1], timeOrder[numRoomTrial-1], true);
     }
 
 }
