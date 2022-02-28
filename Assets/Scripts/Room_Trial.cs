@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 public class Room_Trial : MonoBehaviour
 {
     float TIME_TO_GET_COMFORTABLE = 20f;
@@ -18,6 +19,8 @@ public class Room_Trial : MonoBehaviour
     float [] trtLengths = new float [3]; 
 
     int numTRT = 0;
+
+    int ID;
 
     CustomTimer generalTimer;
 
@@ -38,15 +41,17 @@ public class Room_Trial : MonoBehaviour
         
     }
 
-    public void init(float additionalTime, string sceneName, Procedure callbackObject)
+    public void init(int ID, float additionalTime, string sceneName, Procedure callbackObject)
     {
         this.additionalTime = additionalTime;
         this.sceneName = sceneName;
         this.callbackObject = callbackObject;
+        this.ID = ID;
 
         this.totalRoomStopwatch = gameObject.AddComponent<Stopwatch>();
 
         trtLengths = determineTRTLengths();
+        print("TESTTRTTOCSV "+TRTtoCSV(6,6.9f,"Room Small"));
     }
 
     public float[] determineTRTLengths()
@@ -97,6 +102,7 @@ public class Room_Trial : MonoBehaviour
     {
         float actualTime = trtLengths[numTRT];
         //TODO: record actualTime and result
+        print(TRTtoCSV(actualTime, result, sceneName));
 
         numTRT++;
         print("ending TRT Nr " +numTRT);
@@ -110,6 +116,12 @@ public class Room_Trial : MonoBehaviour
             generalTimer.AddTimer("ADDITIONAL_STAY_TIME", additionalTime, onEnd);
             generalTimer.StartTimer("ADDITIONAL_STAY_TIME");
         }
+    }
+
+    string TRTtoCSV(float actualTime, float perceivedTime, string room){
+        char del = Procedure.CSV_DELIMITER;
+        string csvLine = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}", del, ID,DateTime.Now, actualTime, perceivedTime, room);
+        return csvLine;
     }
 
     void onEnd(){

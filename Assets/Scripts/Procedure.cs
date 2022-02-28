@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Procedure : MonoBehaviour
 
 {
+    public static char CSV_DELIMITER = ';';
     private int numRoomTrial = 0;
     private GameObject currentRoomTrialObject;
+
+    private int ID;
 
     private string [] roomOrder;
     private float [] timeOrder;
@@ -14,6 +18,9 @@ public class Procedure : MonoBehaviour
     private string SCENE_BETWEEN_ROOM_TRIALS = "Neutral";
 
     bool canProceedToNextRoomTrial = false;
+
+    string pathToTRTResults;
+    string pathToRoomResults;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +32,8 @@ public class Procedure : MonoBehaviour
             print("Initiating Experiment");
             DontDestroyOnLoad(gameObject);
             print("Application.persistentDataPath "+Application.persistentDataPath);
+            createCSVs();
+            this.ID = getRunID();
             determineOrderOfConditions();
             //HandPresence handpresence = FindObjectOfType <HandPresence>(); //commented for testing purposes
             //handpresence.bindToTriggerDown(startDummyTrial);
@@ -36,6 +45,39 @@ public class Procedure : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void createCSVs()
+    {
+        string persistPath = Application.persistentDataPath;
+        string directoryPath = Path.Combine(persistPath, "Experiment Time Perception");
+        pathToTRTResults = Path.Combine(directoryPath, "TRT Results.csv");
+        pathToRoomResults = Path.Combine(directoryPath, "Room Results.csv");
+        if(!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+
+            FileStream trtResultsFS = File.Create(pathToTRTResults);
+            FileStream roomResultsFS = File.Create(pathToRoomResults);
+            trtResultsFS.Close();
+            roomResultsFS.Close();
+
+            try{
+                StreamWriter writer = new StreamWriter(pathToTRTResults);
+                writer.WriteLine("Timestamp;ID;stimulusTime;reproducedTime;room");
+                writer.Flush();
+                writer.Close();
+            }
+            catch(IOException e)
+            {
+                print(e.Message);
+            }
+        }
+    }
+
+    int getRunID()
+    {
+        return (int)Random.Range(0,9999);
     }
 
     void determineOrderOfConditions()
@@ -50,7 +92,7 @@ public class Procedure : MonoBehaviour
         currentRoomTrialObject = new GameObject("Room Trial " + numRoomTrial);
         DontDestroyOnLoad(currentRoomTrialObject);
         Room_Trial roomTrial = currentRoomTrialObject.AddComponent<Room_Trial>();
-        roomTrial.init(additionalTime, room, this);
+        roomTrial.init(ID, additionalTime, room, this);
         
         roomTrial.startRoomTrial();
     }
