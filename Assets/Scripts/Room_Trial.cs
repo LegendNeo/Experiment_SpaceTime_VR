@@ -109,7 +109,7 @@ public class Room_Trial : MonoBehaviour
         {
             try
             {
-                StreamWriter writer = new StreamWriter(TRTResultFilePath);
+                StreamWriter writer = new StreamWriter(TRTResultFilePath, append:true);
                 writer.WriteLine(TRTtoCSV(actualTime,result,sceneName));
                 writer.Flush();
                 writer.Close();
@@ -136,7 +136,7 @@ public class Room_Trial : MonoBehaviour
 
     string TRTtoCSV(float actualTime, float perceivedTime, string room){
         char del = Procedure.CSV_DELIMITER;
-        string csvLine = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}", del, ID,DateTime.Now, actualTime, perceivedTime, room);
+        string csvLine = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}", del,DateTime.Now, ID, room, actualTime, perceivedTime);
         return csvLine;
     }
 
@@ -149,6 +149,7 @@ public class Room_Trial : MonoBehaviour
     
     void onRoomExited(Scene scene, LoadSceneMode loadSceneMode){
         print("Room has been exited");
+        SceneManager.sceneLoaded -= onRoomExited;
         float totalTime = totalRoomStopwatch.GetTime();
         callbackObject.endRoomTrial(totalTime);
         

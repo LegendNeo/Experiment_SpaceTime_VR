@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 public class Procedure : MonoBehaviour
 
 {
@@ -64,8 +65,8 @@ public class Procedure : MonoBehaviour
             try{
                 FileStream trtResultsFS = File.Create(pathToTRTResults);
                 trtResultsFS.Close();
-                StreamWriter writer = new StreamWriter(pathToTRTResults);
-                writer.WriteLine("Timestamp;ID;stimulusTime;reproducedTime;room");
+                StreamWriter writer = new StreamWriter(pathToTRTResults, append:true);
+                writer.WriteLine("Timestamp;ID;room;stimulusTime;reproducedTime");
                 writer.Flush();
                 writer.Close();
             }
@@ -94,7 +95,7 @@ public class Procedure : MonoBehaviour
 
     int getRunID()
     {
-        return (int)Random.Range(0,9999);
+        return (int)UnityEngine.Random.Range(0,9999);
     }
 
     void determineOrderOfConditions()
@@ -128,6 +129,18 @@ public class Procedure : MonoBehaviour
             if(numRoomTrial != 0)
             {
                 //TODO: record results of Trial
+                string csv_line = string.Format("{1}{0}{2}{0}{3}{0}{4}", CSV_DELIMITER, DateTime.Now, ID, roomOrder[numRoomTrial], timeOrder[numRoomTrial]);
+                try
+                {
+                    StreamWriter writer = new StreamWriter(pathToRoomResults, append:true);
+                    writer.WriteLine(csv_line);
+                    writer.Flush();
+                    writer.Close();
+                }
+                catch(IOException e)
+                {
+                    print(e.Message);
+                }
             }
             numRoomTrial++;
             HandPresence handpresence = FindObjectOfType <HandPresence>();
