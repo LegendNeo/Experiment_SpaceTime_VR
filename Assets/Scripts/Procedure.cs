@@ -186,7 +186,7 @@ public class Procedure : MonoBehaviour
             if(numRoomTrial != 0)
             {
                 //TODO: record results of Trial
-                string csv_line = string.Format("{1}{0}{2}{0}{3}{0}{4}", CSV_DELIMITER, DateTime.Now, ID, roomOrder[numRoomTrial], timeOrder[numRoomTrial]);
+                string csv_line = string.Format("{1}{0}{2}{0}{3}{0}{4}", CSV_DELIMITER, DateTime.Now, ID, roomOrder[numRoomTrial], totalTime);
                 try
                 {
                     StreamWriter writer = new StreamWriter(pathToRoomResults, append:true);
