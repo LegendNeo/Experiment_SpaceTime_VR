@@ -54,7 +54,7 @@ public class Stopwatch: MonoBehaviour
             running = false;
             
             TimeSpan elapsedTimeInSegment =  DateTime.Now - startTime;
-            float elapsedTimeInSeconds = ((float)elapsedTimeInSegment.Seconds * 1000 + (float)elapsedTimeInSegment.Milliseconds) / 1000;
+            float elapsedTimeInSeconds = ((float)elapsedTimeInSegment.Minutes * 60000 + (float)elapsedTimeInSegment.Seconds * 1000 + (float)elapsedTimeInSegment.Milliseconds) / 1000;
             timeSegments.Add(elapsedTimeInSeconds);
             totalTimeElapsed += elapsedTimeInSeconds;
             print("stopped time at"+totalTimeElapsed);

@@ -195,24 +195,26 @@ public class Procedure : MonoBehaviour
     {
         print("Total time"+totalTime);
         print("Room Trial Completed!");
+        if(numRoomTrial != 0)
+        {
+            //TODO: record results of Trial
+            string csv_line = string.Format("{1}{0}{2}{0}{3}{0}{4}", CSV_DELIMITER, DateTime.Now, ID, roomOrder[numRoomTrial-1], totalTime);
+            try
+            {
+                StreamWriter writer = new StreamWriter(pathToRoomResults, append:true);
+                writer.WriteLine(csv_line);
+                writer.Flush();
+                writer.Close();
+            }
+            catch(IOException e)
+            {
+                print(e.Message);
+            }
+        }
+
         if(numRoomTrial < 9)
         {
-            if(numRoomTrial != 0)
-            {
-                //TODO: record results of Trial
-                string csv_line = string.Format("{1}{0}{2}{0}{3}{0}{4}", CSV_DELIMITER, DateTime.Now, ID, roomOrder[numRoomTrial], totalTime);
-                try
-                {
-                    StreamWriter writer = new StreamWriter(pathToRoomResults, append:true);
-                    writer.WriteLine(csv_line);
-                    writer.Flush();
-                    writer.Close();
-                }
-                catch(IOException e)
-                {
-                    print(e.Message);
-                }
-            }
+            
             numRoomTrial++;
             HandPresence handpresence = FindObjectOfType <HandPresence>();
             handpresence.bindToTriggerDown(proceedToNextRoomTrial); //we only let the participant proceed to the next room when they press the trigger

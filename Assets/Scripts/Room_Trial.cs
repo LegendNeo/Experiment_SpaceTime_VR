@@ -144,6 +144,7 @@ public class Room_Trial : MonoBehaviour
 
     void initiateAdditionalStayTime(Scene scene, LoadSceneMode loadSceneMode)
     {
+        totalRoomStopwatch.StartTiming();
         SceneManager.sceneLoaded -= initiateAdditionalStayTime;
         generalTimer.AddTimer("ADDITIONAL_STAY_TIME", additionalTime, onEnd);
         generalTimer.StartTimer("ADDITIONAL_STAY_TIME");
