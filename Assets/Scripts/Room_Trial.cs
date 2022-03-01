@@ -54,13 +54,15 @@ public class Room_Trial : MonoBehaviour
         this.totalRoomStopwatch = gameObject.AddComponent<Stopwatch>();
 
         trtLengths = determineTRTLengths();
-        print("TESTTRTTOCSV "+TRTtoCSV(6,6.9f,"Room Small"));
     }
 
     public float[] determineTRTLengths()
     {
-        //TODO: we need to come up with some way of randomizing this sequence
-        return new float [3]{2,4,6};
+        //DONE: we need to come up with some way of randomizing this sequence
+        float [] sequence = callbackObject.trtOrders[0];
+        callbackObject.trtOrders.RemoveAt(0);
+        print(string.Join(",", sequence));
+        return sequence;
     }
 
     public void startRoomTrial ()
@@ -162,6 +164,5 @@ public class Room_Trial : MonoBehaviour
         callbackObject.endRoomTrial(totalTime);
         
     }
-
 
 }

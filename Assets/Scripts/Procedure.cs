@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Linq;
 public class Procedure : MonoBehaviour
 
 {
@@ -16,6 +17,8 @@ public class Procedure : MonoBehaviour
     private string [] roomOrder;
     private float [] timeOrder;
 
+    static float[] TRT_LENGTHS = new float[] {2f,4f,6f};
+    public List<float[]> trtOrders;
     public string SCENE_BETWEEN_ROOM_TRIALS = "Neutral";
 
     bool canProceedToNextRoomTrial = false;
@@ -37,6 +40,13 @@ public class Procedure : MonoBehaviour
             createCSVs();
             this.ID = getRunID();
             determineOrderOfConditions();
+
+            trtOrders = balancedLatinSquare<float>(TRT_LENGTHS,10);
+            //print(trtOrders.Count);
+            //foreach (float[] row in trtOrders)
+            //{
+            //    print(string.Join(", ", row));
+            //}
             //HandPresence handpresence = FindObjectOfType <HandPresence>(); //commented for testing purposes
             //handpresence.bindToTriggerDown(startDummyTrial);
             startDummyTrial();
@@ -124,6 +134,10 @@ public class Procedure : MonoBehaviour
                     }
                     newLines[i] = string.Join(";",entries[i]);
                     
+                }
+                if(sequenceUsed == null){
+                    print("NO UNUSED ORDER OF CONDITIONS FOUND! REFILL!");
+                    throw new InvalidDataException("No unused order of conditions left");
                 }
                 List<string> rooms = new List<string>();
                 List<float> times = new List<float>();
@@ -216,4 +230,44 @@ public class Procedure : MonoBehaviour
         startRoomTrial(roomOrder[numRoomTrial-1], timeOrder[numRoomTrial-1], true);
     }
 
+
+    List<T[]> balancedLatinSquare<T>(T[] conditions, int numTrials)
+    {
+        List<T[]> result = new List<T[]>();
+        //based on https://cs.uwaterloo.ca/~dmasson/tools/latin_square/
+        //which itself is based on "Bradley, J. V. Complete counterbalancing of immediate sequential effects in a Latin square design. J. Amer. Statist. Ass.,.1958, 53, 525-528. "
+        //same code, translated from JavaScript into C#
+    
+        System.Random random = new System.Random();
+        int randomStart = random.Next();
+        print("RANDOM START"+randomStart);
+        for(int numTrial=randomStart; numTrial<numTrials+randomStart; numTrial++)
+        {
+            List<T> row = new List<T>();
+
+            for (int i = 0, j = 0, h = 0; i < conditions.Length; i++) {
+                var val = 0;
+                if (i < 2 || i % 2 != 0) {
+                    val = j++;
+                } else {
+                    val = conditions.Length - h - 1;
+                    ++h;
+                }
+
+                var idx = (val + numTrial) % conditions.Length;
+                row.Add(conditions[idx]);
+            }
+
+            if (conditions.Length % 2 != 0 && numTrial % 2 != 0) {
+                row.Reverse();
+            }
+            //end of stolen code
+
+            result.Add(row.ToArray());
+        }
+
+        result = result.OrderBy(row => random.Next()).ToList();
+
+        return result;
+    }
 }

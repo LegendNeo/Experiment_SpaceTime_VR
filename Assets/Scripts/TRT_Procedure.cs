@@ -118,8 +118,6 @@ public class TRT_Procedure: MonoBehaviour
     public void reproduce_start ()
     {
         GameObject feedbackObject = GameObject.Find("TRT Reproduction Feedback");
-        print("l118");
-        print(feedbackObject);
         //GameObject.FindObjectOfType<TRT_Reproduction_Feedback_Behavior>();
         TRT_Reproduction_Feedback_Behavior feedbackObjectComponent = feedbackObject.GetComponent<TRT_Reproduction_Feedback_Behavior>();
         print(feedbackObjectComponent);
