@@ -112,21 +112,41 @@ public class Procedure : MonoBehaviour
                 string [] rawLines = File.ReadAllLines(pathToRoomLatSquare);
                 List<string[]> entries = new List<string[]>();
                 string [] sequenceUsed = null;
+                string [] newLines = new string[rawLines.Length];
                 for (int i=0; i<rawLines.Length; i++)
                 {
                     entries.Add(rawLines[i].Split(";"));
                     if(entries[i][9] == "0" && sequenceUsed == null)
                     {
+                        sequenceUsed = entries[i];
                         entries[i][9] = "1";
+                        print("viable row found");
                     }
+                    newLines[i] = string.Join(";",entries[i]);
                     
                 }
                 List<string> rooms = new List<string>();
                 List<float> times = new List<float>();
                 for(int i = 0; i < 9; i++){
-                    
+                    string[] conditions = sequenceUsed[i].Split('/');
+                    switch(conditions[0]){
+                        case "R1":rooms.Add("Room Small");break;
+                        case "R2":rooms.Add("Room Medium");break;
+                        case "R3":rooms.Add("Room Big");break;
+                        default:print("Unknown Room");break;
+                    }
+                    switch(conditions[1]){
+                        case "T1":times.Add(10f);break;
+                        case "T2":times.Add(20f);break;
+                        case "T3":times.Add(30f);break;
+                        default:print("Unknown Time");break;
+                    }
                 }
+            
+                roomOrder = rooms.ToArray();
+                timeOrder = times.ToArray();
 
+                File.WriteAllLines(pathToRoomLatSquare,newLines);
             }
             catch(IOException e)
             {
@@ -138,8 +158,8 @@ public class Procedure : MonoBehaviour
             print("No Latin square for room order found");
         }
 
-        roomOrder = new string[]{"Room Small","Room Small","Room Small","Room Medium","Room Medium","Room Medium","Room Big","Room Big","Room Big"};
-        timeOrder = new float[]{10,20,30,10,20,30,10,20,30};
+        //roomOrder = new string[]{"Room Small","Room Small","Room Small","Room Medium","Room Medium","Room Medium","Room Big","Room Big","Room Big"};
+        //timeOrder = new float[]{10,20,30,10,20,30,10,20,30};
     }
 
     void startRoomTrial(string room, float additionalTime, bool keepResult)
