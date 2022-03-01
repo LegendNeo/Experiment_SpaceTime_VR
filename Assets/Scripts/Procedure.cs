@@ -22,6 +22,7 @@ public class Procedure : MonoBehaviour
 
     string pathToTRTResults;
     string pathToRoomResults;
+    string directoryPath;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +52,7 @@ public class Procedure : MonoBehaviour
     void createCSVs()
     {
         string persistPath = Application.persistentDataPath;
-        string directoryPath = Path.Combine(persistPath, "Experiment Time Perception");
+        directoryPath = Path.Combine(persistPath, "Experiment Time Perception");
         pathToTRTResults = Path.Combine(directoryPath, "TRT Results.csv");
         pathToRoomResults = Path.Combine(directoryPath, "Room Results.csv");
         if(!Directory.Exists(directoryPath))
@@ -101,6 +102,42 @@ public class Procedure : MonoBehaviour
     void determineOrderOfConditions()
     {
         //TODO: Get order from etruscan rectangle
+        string pathToRoomLatSquare = Path.Combine(directoryPath, "room_latin_square.csv");
+        
+        
+        if(File.Exists(pathToRoomLatSquare))
+        {
+            try
+            {
+                string [] rawLines = File.ReadAllLines(pathToRoomLatSquare);
+                List<string[]> entries = new List<string[]>();
+                string [] sequenceUsed = null;
+                for (int i=0; i<rawLines.Length; i++)
+                {
+                    entries.Add(rawLines[i].Split(";"));
+                    if(entries[i][9] == "0" && sequenceUsed == null)
+                    {
+                        entries[i][9] = "1";
+                    }
+                    
+                }
+                List<string> rooms = new List<string>();
+                List<float> times = new List<float>();
+                for(int i = 0; i < 9; i++){
+                    
+                }
+
+            }
+            catch(IOException e)
+            {
+                print(e.Message+" has occured while loading Latin Square for Room order"); 
+            }
+        }
+        else
+        {
+            print("No Latin square for room order found");
+        }
+
         roomOrder = new string[]{"Room Small","Room Small","Room Small","Room Medium","Room Medium","Room Medium","Room Big","Room Big","Room Big"};
         timeOrder = new float[]{10,20,30,10,20,30,10,20,30};
     }
