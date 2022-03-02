@@ -96,8 +96,6 @@ public class TRT_Procedure: MonoBehaviour
 
     public void reproduce_load_scene()
     {
-        globalStopwatch.StopTiming();
-        MonoBehaviour.print("Got to reproduce_start()");
         try
         {
             SceneManager.LoadScene(SCENENAME_FOR_TRT);
@@ -106,7 +104,6 @@ public class TRT_Procedure: MonoBehaviour
         {
             print(e);
         }
-        MonoBehaviour.print("Got further into reproduce_start()");
         state = "REPRODUCTION_IDLE";
 
         CustomTimer untilSceneLoaded = FindObjectOfType<CustomTimer>();
@@ -120,7 +117,6 @@ public class TRT_Procedure: MonoBehaviour
         GameObject feedbackObject = GameObject.Find("TRT Reproduction Feedback");
         //GameObject.FindObjectOfType<TRT_Reproduction_Feedback_Behavior>();
         TRT_Reproduction_Feedback_Behavior feedbackObjectComponent = feedbackObject.GetComponent<TRT_Reproduction_Feedback_Behavior>();
-        print(feedbackObjectComponent);
         SetReproductionFeedback(feedbackObjectComponent);
         
 
@@ -135,7 +131,6 @@ public class TRT_Procedure: MonoBehaviour
     {
         state = "REPRODUCTION_ON";
         
-        print(reproductionStopwatch);
         reproductionStopwatch.StartTiming();
         reprodFeedback.switchOn();
 

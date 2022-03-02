@@ -76,12 +76,13 @@ public class Room_Trial : MonoBehaviour
     public void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= onSceneLoaded; //ensures that this method is only called when this particular scene is loaded
-        totalRoomStopwatch.StartTiming();
+
         trt_stimulus = FindObjectOfType<TRT_Stimulus_Behavior>();
         print("Scene has been loaded");
         if(!initialSceneLoad)
         {
             initialSceneLoad = true;
+            totalRoomStopwatch.StartTiming();
 
             generalTimer.AddTimer("GET_COMFORTABLE", TIME_TO_GET_COMFORTABLE, startTRT);
             generalTimer.StartTimer("GET_COMFORTABLE");
@@ -144,7 +145,6 @@ public class Room_Trial : MonoBehaviour
 
     void initiateAdditionalStayTime(Scene scene, LoadSceneMode loadSceneMode)
     {
-        totalRoomStopwatch.StartTiming();
         SceneManager.sceneLoaded -= initiateAdditionalStayTime;
         generalTimer.AddTimer("ADDITIONAL_STAY_TIME", additionalTime, onEnd);
         generalTimer.StartTimer("ADDITIONAL_STAY_TIME");
